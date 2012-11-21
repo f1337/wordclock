@@ -1,7 +1,11 @@
+var backgroundColor = '#000';
+var offColor = '#333';
+var onColor = '#fff';
+
 // http://xkcd.com/1123/
 function evenThymeIsJustHydrogenAndTime (activeNodes, indices)
 {
-    console.log('indices', indices);
+    // console.log('indices', indices);
     var hourRow = indices[0];
     var row = $('#WordClock *:nth-child(' + hourRow + ')');
     var hourLeft = indices[1];
@@ -10,6 +14,7 @@ function evenThymeIsJustHydrogenAndTime (activeNodes, indices)
     {
         var child = row.children("*:nth-child(" + i + ")");
         activeNodes.push(child);
+        child.css('color', onColor);
         child.addClass("on");
     }
 }
@@ -71,6 +76,7 @@ var minOnes = [
 
     $(function(){
         var activeNodes = [];
+        var clock = $('#WordClock');
         var runOnce = null;
 
         var setCurrentTime = function ()
@@ -79,8 +85,7 @@ var minOnes = [
             var currentTime = new Date();
             var hour = currentTime.getHours() - 1;
             if(hour == -1){ hour = 11; }
-            var minute = currentTime.getMinutes() - 1;
-            if(minute == -1){ minute = 59; }
+            var minute = currentTime.getMinutes();
             var ampm = "am";
             if(hour > 11){
                 ampm = "pm";
@@ -90,11 +95,10 @@ var minOnes = [
                 ampm = "pm";
             }
 
-            minute = 9;
-
             // un-highlight prior active nodes
             for (var n = 0; n < activeNodes.length; n++)
             {
+                activeNodes[n].css('color', offColor);
                 activeNodes[n].removeClass("on");
             }
 
@@ -103,16 +107,17 @@ var minOnes = [
             evenThymeIsJustHydrogenAndTime(activeNodes, hourIndices);
 
             // highlight the minute's ones
-            var minTen = Math.floor((minute + 1) / 10);
-            var minOne = ((minute + 1) % 10);
+            var minTen = Math.floor(minute / 10);
+            var minOne = (minute % 10);
             if ( minTen == 1 )
             {
-                minOne = minute + 1;
+                minTen = (minOne < 3 ? 0 : 1);
+                minOne += 10;
             }
             var minOneIndices = minOnes[minOne];
 
-            console.log('minTen: ' + minTen);
-            console.log('minOne: ' + minOne);
+            // console.log('minTen: ' + minTen);
+            // console.log('minOne: ' + minOne);
 
             if ( ! (minTen && minOne == 0) )
             {
@@ -144,8 +149,68 @@ var minOnes = [
             }
         };
 
+        // set the initial style
+        clock.css({
+           'background-color': backgroundColor,
+           'color': offColor
+        });
+
+        // decorate the style picker links
+        $('a').each(function()
+        {
+            var link = $(this);
+
+            var newBackgroundColor = link.data('background-color');
+            if ( newBackgroundColor ) link.css('background-color', newBackgroundColor);
+
+            // var newOffColor = $(link).data('off-color');
+            // if ( newOffColor ) offColor = newOffColor;
+            // 
+            var newOnColor = $(link).data('on-color');
+            if ( newOnColor ) link.css('color', newOnColor);
+            // 
+            // clock.css({
+            //    'background-color': backgroundColor,
+            //    'color': offColor
+            // });
+        });
+
         // set the initial time
         setCurrentTime();
+
+        // hijack click events
+        $('a').click(function(e)
+        {
+            var link = e.currentTarget;
+
+            var newBackgroundColor = $(link).data('background-color');
+            if ( newBackgroundColor ) backgroundColor = newBackgroundColor;
+
+            var newOffColor = $(link).data('off-color');
+            if ( newOffColor ) offColor = newOffColor;
+
+            var newOnColor = $(link).data('on-color');
+            if ( newOnColor ) onColor = newOnColor;
+
+            clock.css({
+               'background-color': backgroundColor,
+               'color': offColor
+            });
+
+            // update the highlighted nodes
+            for (var n = 0; n < activeNodes.length; n++)
+            {
+                activeNodes[n].css('color', onColor);
+            }
+
+            // var hash = e.currentTarget.hash;
+            // if (hash)
+            // {
+            //     var css = hash.replace('#', '');
+            //     $('#WordClock').removeClass();
+            //     $('#WordClock').addClass(css);
+            // }
+        });
     });
 
 
