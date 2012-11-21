@@ -1,8 +1,8 @@
 wordclock
 =========
 
-A customizable word clock with to-the-minute granularity. Created using HTML5, CSS3 and JavaScript.
-Inspired by [Biegert & Funk's QLOCKTWO](http://www.qlocktwo.com/info.php?lang=en).
+A customizable word clock with to-the-minute granularity. Created using HTML, CSS and JavaScript.
+Inspired by [Biegert & Funk's QLOCKTWO](http://www.qlocktwo.com/info.php?lang=en). Powered by [jQuery](http://jquery.com).
 
 Usage
 -----
@@ -16,19 +16,31 @@ Customization
 Customize the color scheme by editing the `<nav>` segment in index.html:
 
     <nav>
-        <a href="#black" style="background-color: #000; color: #fff" data-off-color="#333">Black &amp; White</a>
-        <a href="#brown" style="background-color: #44301C; color: #9CCFDD" data-off-color="#5E5043">Blue &amp; Brown</a>
-        <a href="#red" style="background-color: #DF1A21; color: #FBE1A6" data-off-color="#FB6B58">Red &amp; Cream</a>
-        <a href="#blue" style="background-color: #063540; color: #E5D9CF" data-off-color="#176273">Blue Jeans</a>
+        <a href="#" style="background-color: #000; color: #fff" data-off-color="#333">Black &amp; White</a>
+        <a href="#" style="background-color: #44301C; color: #9CCFDD" data-off-color="#5E5043">Blue &amp; Brown</a>
+        <a href="#" style="background-color: #DF1A21; color: #FBE1A6" data-off-color="#FB6B58">Red &amp; Cream</a>
+        <a href="#" style="background-color: #063540; color: #E5D9CF" data-off-color="#176273">Blue Jeans</a>
+        <a href="#" style="background-color: #730240; color: #F2BC79" data-off-color="#BF1B39">Raspberry Sorbet</a>
+        <a href="#" style="background-color: #3D4010; color: #CFD936" data-off-color="#575931">Olive Martini</a>
+        <a href="#" style="background-color: #6F6B79; color: #E1DEEB" data-off-color="#583736">Zoolander</a>
     </nav>
 
-To add more color schemes, simply copy and paste one of the lines above, then customize to taste. The inline styles define the background and highlight colors for the link itself and the clock. The data-off-color is used for the unhighlighted letters.
+To add more color schemes, simply copy and paste one of the lines above, then customize to taste. The inline styles define the background and highlight colors for the link itself and the clock. The `data-off-color` property is used to define the unhighlighted letters. [Adobe Kuhler](https://kuler.adobe.com/) is an excellent tool for choosing color schemes.
 
 
-Errata
-------
+Compatibility
+-------------
 
-wordclock *should* run in the latest CSS3/HTML5-friendly browsers, but has only been testing using Safari (6.0.2), Chrome (16.0.912.77, ) and FireFox ().
+wordclock *should* run in the latest CSS3/HTML5-friendly browsers, but has only been testing using Safari (6.0.2), Chrome (16.0.912.77, 23.0.1271.64) and FireFox (9.0.1, 11.0).
+
+TODO
+----
+
+* Apply programmatic CSS text-shadows, based on current color scheme.
+* Show/hide the color picker (automatically? toggle on tap screen?).
+* Verify (and possibly fix) Internet Explorer support (IE9+).
+* Verify (and possibly fix) Opera support.
+* DRY-up the JavaScript code (it isn't pretty at the moment).
 
 
 License
