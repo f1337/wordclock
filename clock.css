@@ -21,20 +21,9 @@ a
     width: 10rem;
 }
 
-aside
+nav
 {
     position: absolute;
-}
-
-li, ul
-{
-    margin: 0;
-    padding: 0;
-}
-
-li
-{
-    list-style-type: none;
 }
 
 /*
