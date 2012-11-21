@@ -9,6 +9,17 @@ Usage
 
 Usage is simple: Open index.html in your browser.
 
+Screenshots
+-----------
+
+![Black](https://raw.github.com/f1337/wordclock/master/images/black.png)
+![Brown](https://raw.github.com/f1337/wordclock/master/images/brown.png)
+![Denim](https://raw.github.com/f1337/wordclock/master/images/denim.png)
+![Olive](https://raw.github.com/f1337/wordclock/master/images/olive.png)
+![Raspberry](https://raw.github.com/f1337/wordclock/master/images/raspberry.png)
+![Red](https://raw.github.com/f1337/wordclock/master/images/red.png)
+![Steel](https://raw.github.com/f1337/wordclock/master/images/steel.png)
+
 
 Customization
 -------------
