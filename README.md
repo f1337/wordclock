@@ -42,7 +42,7 @@ To add more color schemes, simply copy and paste one of the lines above, then cu
 Compatibility
 -------------
 
-wordclock *should* run in the latest CSS3/HTML5-friendly browsers, but has only been testing using Safari (6.0.2), Chrome (16.0.912.77, 23.0.1271.64) and FireFox (9.0.1, 11.0).
+wordclock *should* run in the latest CSS3/HTML5-friendly browsers, but has only been testing using Safari (6.0.2), Chrome (16.0.912.77, 23.0.1271.64) and FireFox (9.0.1, 11.0, 17.0).
 
 TODO
 ----
