@@ -16,3 +16,32 @@ td.on
 {
     color: #f00;
 }
+
+
+#WordClock
+{
+    display: table;
+/*    width: 100%;*/
+    margin: auto;
+}
+
+#WordClock > *
+{
+    display:table-row;
+}
+
+#WordClock > * > *
+{
+    color: #ccc;
+    display: table-cell;
+    font-family: monospace;
+    font-size: 2em;
+    font-weight: bold;
+    padding: 0.4em;
+    text-align: center;
+}
+
+#WordClock > * > *.on
+{
+    color: #f00;
+}

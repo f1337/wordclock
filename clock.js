@@ -1,13 +1,14 @@
 // http://xkcd.com/1123/
-function evenThymeIsJustHydrogenAndTime (activeNodes, hourIndices)
+function evenThymeIsJustHydrogenAndTime (activeNodes, indices)
 {
-    var hourRow = hourIndices[0];
-    var row = $('table tr:nth-child(' + hourRow + ')');
-    var hourLeft = hourIndices[1];
-    var hourRight = hourLeft + hourIndices[2];
+    console.log('indices', indices);
+    var hourRow = indices[0];
+    var row = $('#WordClock *:nth-child(' + hourRow + ')');
+    var hourLeft = indices[1];
+    var hourRight = hourLeft + indices[2];
     for (var i = hourLeft; i < hourRight; i++)
     {
-        var child = row.children("td:nth-child(" + i + ")");
+        var child = row.children("*:nth-child(" + i + ")");
         activeNodes.push(child);
         child.addClass("on");
     }
@@ -31,7 +32,7 @@ var hours = [
 
 var minTens = [
     // row, left, len
-    [  8, 6, 2 ], // o-
+    [  8, 6, 1 ], // o
     [ 12, 8, 5 ], // -teen
     [  6, 1, 6 ], // twenty
     [  7, 1, 6 ], // thirty
@@ -41,7 +42,7 @@ var minTens = [
 
 var minOnes = [
   // row, left, len
-  [  8, 8, 5 ], // clock
+  [  8, 7, 6 ], // ’clock
   [  9, 1, 3 ], // one
   [ 10, 1, 3 ], // two
   [  9, 4, 5 ], // three
@@ -72,14 +73,8 @@ var minOnes = [
         var activeNodes = [];
         var runOnce = null;
 
-        // var hours = $("#hours"), minutes = $("#minutes"), seconds = $("#seconds");
-        // 
-        // //these are default grabs so that the first time it runs, it doesn't throw an error
-        // //after that, we use them to cache the current active arm for each group, so that we
-        // //don't have to waste time searching
-        // var cHour = $("html"), cMinute = $("html"), cSecond = $("html");
-        // 
-        var setCurrentTime = function(){
+        var setCurrentTime = function ()
+        {
             //establish what the time is
             var currentTime = new Date();
             var hour = currentTime.getHours() - 1;
@@ -95,6 +90,8 @@ var minOnes = [
                 ampm = "pm";
             }
 
+            minute = 9;
+
             // un-highlight prior active nodes
             for (var n = 0; n < activeNodes.length; n++)
             {
@@ -106,7 +103,7 @@ var minOnes = [
             evenThymeIsJustHydrogenAndTime(activeNodes, hourIndices);
 
             // highlight the minute's ones
-            var minTen = Math.floor(minute / 10);
+            var minTen = Math.floor((minute + 1) / 10);
             var minOne = ((minute + 1) % 10);
             if ( minTen == 1 )
             {
@@ -114,32 +111,20 @@ var minOnes = [
             }
             var minOneIndices = minOnes[minOne];
 
+            console.log('minTen: ' + minTen);
+            console.log('minOne: ' + minOne);
+
             if ( ! (minTen && minOne == 0) )
             {
                 evenThymeIsJustHydrogenAndTime(activeNodes, minOneIndices);
             }
 
-            if ( minOne < 9 || minOne > 12 )
+            if ( minOne < 10 || minOne > 12 )
             {
                 // highlight the minute's tens
                 var minTenIndices = minTens[minTen];
                 evenThymeIsJustHydrogenAndTime(activeNodes, minTenIndices);
             }
-            
-            
-
-            // //remove the active class, and add it to the new time
-            // cHour.removeClass("active");
-            // cHour = hours.children(":eq(" + hour + ")").addClass("active");
-            //             
-            // cMinute.removeClass("active");
-            // cMinute = minutes.children(":eq(" + minute + ")").addClass("active");
-            //             
-            // cSecond.removeClass("active");
-            // cSecond = seconds.children(":eq(" + second + ")").addClass("active");
-            //             
-            // $("body").removeClass("am").removeClass("pm").addClass(ampm);
-
 
             if ( runOnce )
             {
