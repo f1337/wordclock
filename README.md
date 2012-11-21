@@ -7,7 +7,7 @@ Inspired by [Biegert & Funk's QLOCKTWO](http://www.qlocktwo.com/info.php?lang=en
 Usage
 -----
 
-Usage is simple: Open index.html in your browser.
+Usage is simple: Open index.html in your browser. Or [check out the live demo](http://f1337.github.com/wordclock/).
 
 Screenshots
 -----------
