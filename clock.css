@@ -1,0 +1,18 @@
+table
+{
+    margin: auto;
+}
+
+td
+{
+    color: #ccc;
+    font-family: monospace;
+    font-size: 2em;
+    font-weight: bold;
+    padding: 0.4em;
+}
+
+td.on
+{
+    color: #f00;
+}
