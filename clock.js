@@ -1,6 +1,9 @@
+var activeNodes = [];
 var backgroundColor = '#000';
+var clock = null;
 var offColor = '#333';
 var onColor = '#fff';
+var runOnce = null;
 
 // http://xkcd.com/1123/
 function evenThymeIsJustHydrogenAndTime (activeNodes, indices)
@@ -18,6 +21,107 @@ function evenThymeIsJustHydrogenAndTime (activeNodes, indices)
         child.addClass("on");
     }
 }
+
+function clickJackAllTheThings (e)
+{
+    var link = $(e.currentTarget);
+
+    var newBackgroundColor = link.css('background-color');
+    if ( newBackgroundColor ) backgroundColor = newBackgroundColor;
+
+    var newOffColor = link.data('off-color');
+    if ( newOffColor ) offColor = newOffColor;
+
+    // var newOnColor = link.data('on-color');
+    var newOnColor = link.css('color');
+    if ( newOnColor ) onColor = newOnColor;
+
+    clock.css({
+       'background-color': backgroundColor,
+       'color': offColor
+    });
+
+    // update the highlighted nodes
+    for (var n = 0; n < activeNodes.length; n++)
+    {
+        activeNodes[n].css('color', onColor);
+    }
+}
+
+function setCurrentTime ()
+{
+    //establish what the time is
+    var currentTime = new Date();
+    var hour = currentTime.getHours() - 1;
+    if(hour == -1){ hour = 11; }
+    var minute = currentTime.getMinutes();
+    var ampm = "am";
+    if(hour > 11){
+        ampm = "pm";
+        hour = hour-12;
+    }
+    if(hour == 11){
+        ampm = "pm";
+    }
+
+    // un-highlight prior active nodes
+    for (var n = 0; n < activeNodes.length; n++)
+    {
+        activeNodes[n].css('color', offColor);
+        activeNodes[n].removeClass("on");
+    }
+
+    // highlight the hour
+    evenThymeIsJustHydrogenAndTime(activeNodes, hours[hour]);
+
+    // highlight the minute's ones
+    var minTen = Math.floor(minute / 10);
+    var minOne = (minute % 10);
+
+    // handle tens and teens in a special manner
+    // 10, 11, and 12 => treated as extra "ones", with no "tens"
+    // 13+ => treated as extra "ones", includes the "ten"
+    if ( minTen == 1 )
+    {
+        minTen = (minOne < 3 ? 0 : 1);
+        minOne += 10;
+    }
+
+    // highlight the minute's "ones"
+    // if an even multiple of 10 minutes, skip the "ones"
+    if ( ! (minTen && minOne == 0) )
+    {
+        evenThymeIsJustHydrogenAndTime(activeNodes, minOnes[minOne]);
+    }
+
+    // highlight the minute's "tens"
+    // handle 10, 11, 12 in a special manner (see above)
+    if ( minOne < 10 || minOne > 12 )
+    {
+        evenThymeIsJustHydrogenAndTime(activeNodes, minTens[minTen]);
+    }
+
+    // this method has been run once before
+    // assume we're at the "top of the minute" now
+    // clear the one-time interval and setup the per-minute interval
+    if ( runOnce )
+    {
+        // clear the one-time interval
+        clearInterval(runOnce)
+        // set the interval to run every minute
+        setInterval(setCurrentTime, 60000);
+    }
+    // run this function again at the top of the minute
+    // but only do this ONCE!
+    else
+    {
+        var currentTime = new Date();
+        var second = currentTime.getSeconds();
+        nextInterval = Math.max((60 - second), 1);
+        runOnce = setInterval(setCurrentTime, (nextInterval * 1000));
+    }
+}
+
 
 /*
 Link-lists below define grid positions for the various words on the clock
@@ -79,83 +183,8 @@ var minOnes = [
 
 $(function ()
 {
-    var activeNodes = [];
-    var clock = $('#WordClock');
-    var runOnce = null;
-
-    var setCurrentTime = function ()
-    {
-        //establish what the time is
-        var currentTime = new Date();
-        var hour = currentTime.getHours() - 1;
-        if(hour == -1){ hour = 11; }
-        var minute = currentTime.getMinutes();
-        var ampm = "am";
-        if(hour > 11){
-            ampm = "pm";
-            hour = hour-12;
-        }
-        if(hour == 11){
-            ampm = "pm";
-        }
-
-        // un-highlight prior active nodes
-        for (var n = 0; n < activeNodes.length; n++)
-        {
-            activeNodes[n].css('color', offColor);
-            activeNodes[n].removeClass("on");
-        }
-
-        // highlight the hour
-        evenThymeIsJustHydrogenAndTime(activeNodes, hours[hour]);
-
-        // highlight the minute's ones
-        var minTen = Math.floor(minute / 10);
-        var minOne = (minute % 10);
-
-        // handle tens and teens in a special manner
-        // 10, 11, and 12 => treated as extra "ones", with no "tens"
-        // 13+ => treated as extra "ones", includes the "ten"
-        if ( minTen == 1 )
-        {
-            minTen = (minOne < 3 ? 0 : 1);
-            minOne += 10;
-        }
-
-        // highlight the minute's "ones"
-        // if an even multiple of 10 minutes, skip the "ones"
-        if ( ! (minTen && minOne == 0) )
-        {
-            evenThymeIsJustHydrogenAndTime(activeNodes, minOnes[minOne]);
-        }
-
-        // highlight the minute's "tens"
-        // handle 10, 11, 12 in a special manner (see above)
-        if ( minOne < 10 || minOne > 12 )
-        {
-            evenThymeIsJustHydrogenAndTime(activeNodes, minTens[minTen]);
-        }
-
-        // this method has been run once before
-        // assume we're at the "top of the minute" now
-        // clear the one-time interval and setup the per-minute interval
-        if ( runOnce )
-        {
-            // clear the one-time interval
-            clearInterval(runOnce)
-            // set the interval to run every minute
-            setInterval(setCurrentTime, 60000);
-        }
-        // run this function again at the top of the minute
-        // but only do this ONCE!
-        else
-        {
-            var currentTime = new Date();
-            var second = currentTime.getSeconds();
-            nextInterval = Math.max((60 - second), 1);
-            runOnce = setInterval(setCurrentTime, (nextInterval * 1000));
-        }
-    };
+    // find the clock on the page
+    clock = $('#WordClock');
 
     // set the initial style
     clock.css({
@@ -167,29 +196,5 @@ $(function ()
     setCurrentTime();
 
     // hijack click events
-    $('a').click(function(e)
-    {
-        var link = $(e.currentTarget);
-
-        var newBackgroundColor = link.css('background-color');
-        if ( newBackgroundColor ) backgroundColor = newBackgroundColor;
-
-        var newOffColor = link.data('off-color');
-        if ( newOffColor ) offColor = newOffColor;
-
-        // var newOnColor = link.data('on-color');
-        var newOnColor = link.css('color');
-        if ( newOnColor ) onColor = newOnColor;
-
-        clock.css({
-           'background-color': backgroundColor,
-           'color': offColor
-        });
-
-        // update the highlighted nodes
-        for (var n = 0; n < activeNodes.length; n++)
-        {
-            activeNodes[n].css('color', onColor);
-        }
-    });
+    $('a').click(clickJackAllTheThings);
 });
