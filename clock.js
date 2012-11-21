@@ -163,41 +163,22 @@ $(function ()
        'color': offColor
     });
 
-    // decorate the style picker links
-    $('a').each(function()
-    {
-        var link = $(this);
-
-        var newBackgroundColor = link.data('background-color');
-        if ( newBackgroundColor ) link.css('background-color', newBackgroundColor);
-
-        // var newOffColor = $(link).data('off-color');
-        // if ( newOffColor ) offColor = newOffColor;
-        // 
-        var newOnColor = $(link).data('on-color');
-        if ( newOnColor ) link.css('color', newOnColor);
-        // 
-        // clock.css({
-        //    'background-color': backgroundColor,
-        //    'color': offColor
-        // });
-    });
-
     // set the initial time
     setCurrentTime();
 
     // hijack click events
     $('a').click(function(e)
     {
-        var link = e.currentTarget;
+        var link = $(e.currentTarget);
 
-        var newBackgroundColor = $(link).data('background-color');
+        var newBackgroundColor = link.css('background-color');
         if ( newBackgroundColor ) backgroundColor = newBackgroundColor;
 
-        var newOffColor = $(link).data('off-color');
+        var newOffColor = link.data('off-color');
         if ( newOffColor ) offColor = newOffColor;
 
-        var newOnColor = $(link).data('on-color');
+        // var newOnColor = link.data('on-color');
+        var newOnColor = link.css('color');
         if ( newOnColor ) onColor = newOnColor;
 
         clock.css({

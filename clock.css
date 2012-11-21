@@ -43,6 +43,7 @@ Styles for the clock itself
 
 #WordClock
 {
+    background-color: #000;
     color: #ccc;
     display: table;
     margin: auto;
@@ -66,6 +67,6 @@ Styles for the clock itself
 
 #WordClock > * > *.on
 {
-    color: #f00;
-    text-shadow: 0 0 0.8rem #666, 0 0 0.2rem #666, 0 0 0.2rem #999; /* 6710886, 10066329: 0.4, 0.6 */
+    color: #fff;
+/*    text-shadow: 0 0 0.8rem #666, 0 0 0.2rem #666, 0 0 0.2rem #999;*/ /* 6710886, 10066329: 0.4, 0.6 */
 }
