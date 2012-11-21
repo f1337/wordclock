@@ -1,0 +1,61 @@
+/*
+Base document style
+*/
+
+html
+{
+    font-family: Helvetica, Arial, _sans;
+    font-size: 100%;
+}
+
+/*
+Styles for color selector
+*/
+
+a
+{
+    display: block;
+    padding: 0.4rem;
+    text-align: center;
+    text-decoration: none;
+    width: 10rem;
+}
+
+nav
+{
+    position: absolute;
+}
+
+/*
+Styles for the clock itself
+*/
+
+#WordClock
+{
+    background-color: #000;
+    color: #ccc;
+    display: table;
+    margin: auto;
+    padding: 5em;
+    vertical-align: middle;
+}
+
+#WordClock > *
+{
+    display:table-row;
+}
+
+#WordClock > * > *
+{
+    display: table-cell;
+    font-size: 1.4rem;
+    padding: 0.6rem;
+    text-align: center;
+    width: 1.4rem;
+}
+
+#WordClock > * > *.on
+{
+    color: #fff;
+/*    text-shadow: 0 0 0.8rem #666, 0 0 0.2rem #666, 0 0 0.2rem #999;*/ /* 6710886, 10066329: 0.4, 0.6 */
+}
