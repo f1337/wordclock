@@ -19,6 +19,10 @@ function evenThymeIsJustHydrogenAndTime (activeNodes, indices)
     }
 }
 
+/*
+Link-lists below define grid positions for the various words on the clock
+*/
+
 var hours = [
   // row, left, len
   [ 1, 1, 3 ], // one
@@ -72,146 +76,139 @@ var minOnes = [
   [ 11, 9, 4 ] // nineteen
 ];
 
-// (function($){
 
-    $(function(){
-        var activeNodes = [];
-        var clock = $('#WordClock');
-        var runOnce = null;
+$(function ()
+{
+    var activeNodes = [];
+    var clock = $('#WordClock');
+    var runOnce = null;
 
-        var setCurrentTime = function ()
+    var setCurrentTime = function ()
+    {
+        //establish what the time is
+        var currentTime = new Date();
+        var hour = currentTime.getHours() - 1;
+        if(hour == -1){ hour = 11; }
+        var minute = currentTime.getMinutes();
+        var ampm = "am";
+        if(hour > 11){
+            ampm = "pm";
+            hour = hour-12;
+        }
+        if(hour == 11){
+            ampm = "pm";
+        }
+
+        // un-highlight prior active nodes
+        for (var n = 0; n < activeNodes.length; n++)
         {
-            //establish what the time is
+            activeNodes[n].css('color', offColor);
+            activeNodes[n].removeClass("on");
+        }
+
+        // highlight the hour
+        evenThymeIsJustHydrogenAndTime(activeNodes, hours[hour]);
+
+        // highlight the minute's ones
+        var minTen = Math.floor(minute / 10);
+        var minOne = (minute % 10);
+
+        // handle tens and teens in a special manner
+        // 10, 11, and 12 => treated as extra "ones", with no "tens"
+        // 13+ => treated as extra "ones", includes the "ten"
+        if ( minTen == 1 )
+        {
+            minTen = (minOne < 3 ? 0 : 1);
+            minOne += 10;
+        }
+
+        // highlight the minute's "ones"
+        // if an even multiple of 10 minutes, skip the "ones"
+        if ( ! (minTen && minOne == 0) )
+        {
+            evenThymeIsJustHydrogenAndTime(activeNodes, minOnes[minOne]);
+        }
+
+        // highlight the minute's "tens"
+        // handle 10, 11, 12 in a special manner (see above)
+        if ( minOne < 10 || minOne > 12 )
+        {
+            evenThymeIsJustHydrogenAndTime(activeNodes, minTens[minTen]);
+        }
+
+        // this method has been run once before
+        // assume we're at the "top of the minute" now
+        // clear the one-time interval and setup the per-minute interval
+        if ( runOnce )
+        {
+            // clear the one-time interval
+            clearInterval(runOnce)
+            // set the interval to run every minute
+            setInterval(setCurrentTime, 60000);
+        }
+        // run this function again at the top of the minute
+        // but only do this ONCE!
+        else
+        {
             var currentTime = new Date();
-            var hour = currentTime.getHours() - 1;
-            if(hour == -1){ hour = 11; }
-            var minute = currentTime.getMinutes();
-            var ampm = "am";
-            if(hour > 11){
-                ampm = "pm";
-                hour = hour-12;
-            }
-            if(hour == 11){
-                ampm = "pm";
-            }
+            var second = currentTime.getSeconds();
+            nextInterval = Math.max((60 - second), 1);
+            runOnce = setInterval(setCurrentTime, (nextInterval * 1000));
+        }
+    };
 
-            // un-highlight prior active nodes
-            for (var n = 0; n < activeNodes.length; n++)
-            {
-                activeNodes[n].css('color', offColor);
-                activeNodes[n].removeClass("on");
-            }
+    // set the initial style
+    clock.css({
+       'background-color': backgroundColor,
+       'color': offColor
+    });
 
-            // highlight the hour
-            var hourIndices = hours[hour];
-            evenThymeIsJustHydrogenAndTime(activeNodes, hourIndices);
+    // decorate the style picker links
+    $('a').each(function()
+    {
+        var link = $(this);
 
-            // highlight the minute's ones
-            var minTen = Math.floor(minute / 10);
-            var minOne = (minute % 10);
-            if ( minTen == 1 )
-            {
-                minTen = (minOne < 3 ? 0 : 1);
-                minOne += 10;
-            }
-            var minOneIndices = minOnes[minOne];
+        var newBackgroundColor = link.data('background-color');
+        if ( newBackgroundColor ) link.css('background-color', newBackgroundColor);
 
-            // console.log('minTen: ' + minTen);
-            // console.log('minOne: ' + minOne);
+        // var newOffColor = $(link).data('off-color');
+        // if ( newOffColor ) offColor = newOffColor;
+        // 
+        var newOnColor = $(link).data('on-color');
+        if ( newOnColor ) link.css('color', newOnColor);
+        // 
+        // clock.css({
+        //    'background-color': backgroundColor,
+        //    'color': offColor
+        // });
+    });
 
-            if ( ! (minTen && minOne == 0) )
-            {
-                evenThymeIsJustHydrogenAndTime(activeNodes, minOneIndices);
-            }
+    // set the initial time
+    setCurrentTime();
 
-            if ( minOne < 10 || minOne > 12 )
-            {
-                // highlight the minute's tens
-                var minTenIndices = minTens[minTen];
-                evenThymeIsJustHydrogenAndTime(activeNodes, minTenIndices);
-            }
+    // hijack click events
+    $('a').click(function(e)
+    {
+        var link = e.currentTarget;
 
-            if ( runOnce )
-            {
-                // clear the one-time interval
-                clearInterval(runOnce)
-                // set the interval to run every minute
-                setInterval(setCurrentTime, 60000);
-            }
-            // run this function again at the top of the minute
-            else
-            {
-                var currentTime = new Date();
-                var second = currentTime.getSeconds() - 1;
-                if (second == -1) { second = 59; }
-                nextInterval = Math.max((60 - second), 1);
-                runOnce = setInterval(setCurrentTime, (nextInterval * 1000));
-            }
-        };
+        var newBackgroundColor = $(link).data('background-color');
+        if ( newBackgroundColor ) backgroundColor = newBackgroundColor;
 
-        // set the initial style
+        var newOffColor = $(link).data('off-color');
+        if ( newOffColor ) offColor = newOffColor;
+
+        var newOnColor = $(link).data('on-color');
+        if ( newOnColor ) onColor = newOnColor;
+
         clock.css({
            'background-color': backgroundColor,
            'color': offColor
         });
 
-        // decorate the style picker links
-        $('a').each(function()
+        // update the highlighted nodes
+        for (var n = 0; n < activeNodes.length; n++)
         {
-            var link = $(this);
-
-            var newBackgroundColor = link.data('background-color');
-            if ( newBackgroundColor ) link.css('background-color', newBackgroundColor);
-
-            // var newOffColor = $(link).data('off-color');
-            // if ( newOffColor ) offColor = newOffColor;
-            // 
-            var newOnColor = $(link).data('on-color');
-            if ( newOnColor ) link.css('color', newOnColor);
-            // 
-            // clock.css({
-            //    'background-color': backgroundColor,
-            //    'color': offColor
-            // });
-        });
-
-        // set the initial time
-        setCurrentTime();
-
-        // hijack click events
-        $('a').click(function(e)
-        {
-            var link = e.currentTarget;
-
-            var newBackgroundColor = $(link).data('background-color');
-            if ( newBackgroundColor ) backgroundColor = newBackgroundColor;
-
-            var newOffColor = $(link).data('off-color');
-            if ( newOffColor ) offColor = newOffColor;
-
-            var newOnColor = $(link).data('on-color');
-            if ( newOnColor ) onColor = newOnColor;
-
-            clock.css({
-               'background-color': backgroundColor,
-               'color': offColor
-            });
-
-            // update the highlighted nodes
-            for (var n = 0; n < activeNodes.length; n++)
-            {
-                activeNodes[n].css('color', onColor);
-            }
-
-            // var hash = e.currentTarget.hash;
-            // if (hash)
-            // {
-            //     var css = hash.replace('#', '');
-            //     $('#WordClock').removeClass();
-            //     $('#WordClock').addClass(css);
-            // }
-        });
+            activeNodes[n].css('color', onColor);
+        }
     });
-
-
-// })();
+});

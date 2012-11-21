@@ -1,8 +1,16 @@
+/*
+Base document style
+*/
+
 html
 {
     font-family: Helvetica, Arial, _sans;
     font-size: 100%;
 }
+
+/*
+Styles for color selector
+*/
 
 a
 {
@@ -28,6 +36,10 @@ li
 {
     list-style-type: none;
 }
+
+/*
+Styles for the clock itself
+*/
 
 #WordClock
 {
