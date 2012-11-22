@@ -42,7 +42,7 @@ To add more color schemes, simply copy and paste one of the lines above, then cu
 Compatibility
 -------------
 
-wordclock *should* run in the latest CSS3/HTML5-friendly browsers, but has only been testing using Safari (6.0.2), Chrome (16.0.912.77, 23.0.1271.64) and FireFox (9.0.1, 11.0, 17.0).
+wordclock *should* run in the latest CSS3/HTML5-friendly browsers, but has only been tested using Safari (6.0.2), Chrome (16.0.912.77, 23.0.1271.64), FireFox (9.0.1, 11.0, 17.0) and Opera (12.11) on on Mac OS X (10.8.2) and Mobile Safari on iOS 6.
 
 TODO
 ----
@@ -50,7 +50,6 @@ TODO
 * Apply programmatic CSS text-shadows, based on current color scheme.
 * Show/hide the color picker (automatically? toggle on tap screen?).
 * Verify (and possibly fix) Internet Explorer support (IE9+).
-* Verify (and possibly fix) Opera support.
 * DRY-up the JavaScript code (it isn't pretty at the moment).
 
 
