@@ -134,7 +134,6 @@ Klock.prototype.elementClicked = function (e)
 
 Klock.prototype.highlightElementsAtIndices = function (indices)
 {
-    // console.log('indices', indices);
     var hourRow = indices[0];
     var row = $('#WordClock *:nth-child(' + hourRow + ')');
     var hourLeft = indices[1];
@@ -162,7 +161,7 @@ Klock.prototype.updateStyle = function ()
 
 Klock.prototype.updateTime = function ()
 {
-    console.profile();
+    // console.profile();
 
     //establish what the time is
     var currentTime = new Date();
@@ -228,7 +227,7 @@ Klock.prototype.updateTime = function ()
     {
         // set the interval to run every minute
         this.intervalToken = setInterval(function () { self.updateTime(); delete self; }, 60000);
-        console.log('set interval with token: ' + this.intervalToken);
+        // console.log('set interval with token: ' + this.intervalToken);
         
     }
     // run this function again at the top of the minute
@@ -239,10 +238,10 @@ Klock.prototype.updateTime = function ()
         var nextInterval = Math.max((60 - second), 1);
         setTimeout(function () { self.updateTime(); delete self; }, (nextInterval * 1000));
         this.intervalToken = -1;
-        console.log('set timeout with token: ' + this.intervalToken);
+        // console.log('set timeout with token: ' + this.intervalToken);
     }
 
-    console.profileEnd();
+    // console.profileEnd();
 }
 
 
