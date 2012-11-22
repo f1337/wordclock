@@ -1,9 +1,74 @@
+function Klock ()
+{
+    
+}
+
+/*
+Link-lists below define grid positions for the various words on the clock
+*/
+
+Klock.hours = [
+  // row, left, len
+  [ 1, 1, 3 ], // one
+  [ 2, 1, 3 ], // two
+  [ 1, 4, 5 ], // three
+  [ 2, 4, 4 ], // four
+  [ 1, 9, 4 ], // five
+  [ 3, 1, 3 ], // six
+  [ 2, 8, 5 ], // seven
+  [ 3, 4, 5 ], // eight
+  [ 3, 9, 4 ], // nine
+  [ 5, 1, 3 ], // ten
+  [ 4, 1, 6 ], // eleven
+  [ 4, 7, 6 ]  // twelve
+];
+
+Klock.minTens = [
+    // row, left, len
+    [  8, 6, 1 ], // o
+    [ 12, 8, 5 ], // -teen
+    [  6, 1, 6 ], // twenty
+    [  7, 1, 6 ], // thirty
+    [  7, 8, 5 ], // forty
+    [  8, 1, 5 ] // fifty
+];
+
+Klock.minOnes = [
+  // row, left, len
+  [  8, 7, 6 ], // ’clock
+  [  9, 1, 3 ], // one
+  [ 10, 1, 3 ], // two
+  [  9, 4, 5 ], // three
+  [ 10, 4, 4 ], // four
+  [  9, 9, 4 ], // five
+  [ 11, 1, 3 ], // six
+  [ 10, 8, 5 ], // seven
+  [ 11, 4, 5 ], // eight
+  [ 11, 9, 4 ], // nine
+
+
+  [ 5, 10, 3 ], // ten
+  [ 12, 1, 6 ], // eleven
+  [  6, 7, 6 ],  // twelve
+
+  [  7, 1, 5 ], // thirteen
+  [ 10, 4, 4 ], // fourteen
+  [  8, 1, 3 ], // fifteen
+  [ 11, 1, 3 ], // sixteen
+  [ 10, 8, 5 ], // seventeen
+  [ 11, 4, 5 ], // eighteen
+  [ 11, 9, 4 ] // nineteen
+];
+
+
+
+
 var activeNodes = [];
 var backgroundColor = '#000';
 var clock = null;
+var intervalToken = null;
 var offColor = '#333';
 var onColor = '#fff';
-var runOnce = null;
 
 // http://xkcd.com/1123/
 function evenThymeIsJustHydrogenAndTime (indices)
@@ -50,6 +115,8 @@ function clickJackAllTheThings (e)
 
 function setCurrentTime ()
 {
+    console.profile();
+
     //establish what the time is
     var currentTime = new Date();
     var hour = currentTime.getHours() - 1;
@@ -65,14 +132,15 @@ function setCurrentTime ()
     }
 
     // un-highlight prior active nodes
-    for (var n = 0; n < activeNodes.length; n++)
+    while (activeNodes.length)
     {
-        activeNodes[n].css('color', offColor);
-        activeNodes[n].removeClass("on");
+        var node = activeNodes.shift();
+        node.css('color', offColor);
+        node.removeClass("on");
     }
 
     // highlight the hour
-    evenThymeIsJustHydrogenAndTime(hours[hour]);
+    evenThymeIsJustHydrogenAndTime(Klock.hours[hour]);
 
     // highlight the minute's ones
     var minTen = Math.floor(minute / 10);
@@ -91,94 +159,40 @@ function setCurrentTime ()
     // if an even multiple of 10 minutes, skip the "ones"
     if ( ! (minTen && minOne == 0) )
     {
-        evenThymeIsJustHydrogenAndTime(minOnes[minOne]);
+        evenThymeIsJustHydrogenAndTime(Klock.minOnes[minOne]);
     }
 
     // highlight the minute's "tens"
     // handle 10, 11, 12 in a special manner (see above)
     if ( minOne < 10 || minOne > 12 )
     {
-        evenThymeIsJustHydrogenAndTime(minTens[minTen]);
+        evenThymeIsJustHydrogenAndTime(Klock.minTens[minTen]);
     }
 
     // this method has been run once before
     // assume we're at the "top of the minute" now
     // clear the one-time interval and setup the per-minute interval
-    if ( runOnce )
+    if ( intervalToken == -1 )
     {
-        // clear the one-time interval
-        clearInterval(runOnce)
         // set the interval to run every minute
-        setInterval(setCurrentTime, 60000);
+        intervalToken = setInterval(setCurrentTime, 60000);
+        console.log('set interval with token: ' + intervalToken);
+        
     }
     // run this function again at the top of the minute
     // but only do this ONCE!
-    else
+    else if ( intervalToken == null )
     {
-        var currentTime = new Date();
         var second = currentTime.getSeconds();
-        nextInterval = Math.max((60 - second), 1);
-        runOnce = setInterval(setCurrentTime, (nextInterval * 1000));
+        var nextInterval = Math.max((60 - second), 1);
+        setTimeout(setCurrentTime, (nextInterval * 1000));
+        intervalToken = -1;
+        console.log('set timeout with token: ' + intervalToken);
     }
+
+    console.profileEnd();
 }
 
-
-/*
-Link-lists below define grid positions for the various words on the clock
-*/
-
-var hours = [
-  // row, left, len
-  [ 1, 1, 3 ], // one
-  [ 2, 1, 3 ], // two
-  [ 1, 4, 5 ], // three
-  [ 2, 4, 4 ], // four
-  [ 1, 9, 4 ], // five
-  [ 3, 1, 3 ], // six
-  [ 2, 8, 5 ], // seven
-  [ 3, 4, 5 ], // eight
-  [ 3, 9, 4 ], // nine
-  [ 5, 1, 3 ], // ten
-  [ 4, 1, 6 ], // eleven
-  [ 4, 7, 6 ]  // twelve
-];
-
-var minTens = [
-    // row, left, len
-    [  8, 6, 1 ], // o
-    [ 12, 8, 5 ], // -teen
-    [  6, 1, 6 ], // twenty
-    [  7, 1, 6 ], // thirty
-    [  7, 8, 5 ], // forty
-    [  8, 1, 5 ] // fifty
-];
-
-var minOnes = [
-  // row, left, len
-  [  8, 7, 6 ], // ’clock
-  [  9, 1, 3 ], // one
-  [ 10, 1, 3 ], // two
-  [  9, 4, 5 ], // three
-  [ 10, 4, 4 ], // four
-  [  9, 9, 4 ], // five
-  [ 11, 1, 3 ], // six
-  [ 10, 8, 5 ], // seven
-  [ 11, 4, 5 ], // eight
-  [ 11, 9, 4 ], // nine
-
-
-  [ 5, 10, 3 ], // ten
-  [ 12, 1, 6 ], // eleven
-  [  6, 7, 6 ],  // twelve
-
-  [  7, 1, 5 ], // thirteen
-  [ 10, 4, 4 ], // fourteen
-  [  8, 1, 3 ], // fifteen
-  [ 11, 1, 3 ], // sixteen
-  [ 10, 8, 5 ], // seventeen
-  [ 11, 4, 5 ], // eighteen
-  [ 11, 9, 4 ] // nineteen
-];
 
 
 $(function ()
