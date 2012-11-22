@@ -2,6 +2,13 @@
 Base document style
 */
 
+*
+{ 
+    -moz-box-sizing: border-box; 
+    -webkit-box-sizing: border-box; 
+    box-sizing: border-box; 
+}
+
 html
 {
     font-family: Helvetica, Arial, _sans;
@@ -10,7 +17,7 @@ html
 
 body
 {
-    margin: 1rem;
+    margin: 0;
     padding: 0;
     background-color: #fff;
 }
@@ -25,6 +32,20 @@ header
     margin-right: 1rem;
     position: absolute;
     right: 0;
+    top: .5em;
+    text-align: center;
+}
+
+header a {
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    text-decoration: none;
+    padding: .1em .5em;
+    text-transform: uppercase;
+    letter-spacing: -1px;
+    font-weight: 400;
+    font-size: .8rem;
 }
 
 
@@ -35,18 +56,42 @@ Styles for color selector
 nav
 {
     position: absolute;
+    left: 0;
+    height: 100%;
+    display: table;
+    width: 1.25rem;
 }
 
 nav a
 {
-    border-bottom: 1px solid #fff;
-    border-right: 1px solid #fff;
-    display: block;
-    font-size: 0;
-    height: 4rem;
+    border-right: 1px solid rgba(255,255,255,.5);
+    display: table-row;
+    direction: ltr;
+    text-indent: -999em;
     overflow: hidden;
-    padding: 0.4rem;
-    width: 4rem;
+    font-size: 0;
+    width: 10px;
+    position: relative;
+}
+
+nav a:after {
+    content: attr(title);
+    font-size: 10px;
+    color: white;
+    position: absolute;
+    width: 100px;
+    letter-spacing: -1px;
+    -moz-transform: rotate(-90deg);
+    -webkit-transform: rotate(-90deg);
+    -o-transform: rotate(-90deg);
+    -ms-transform: rotate(-90deg);
+    transform: rotate(-90deg);
+    /* filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3); */
+    width: 1rem;
+    left: 0;
+    text-align: center;
+    text-indent: -5rem;
+
 }
 
 /*
@@ -59,25 +104,26 @@ Styles for the clock itself
     color: #ccc;
     display: table;
     margin: auto;
-    padding: 5em;
+    width: 100%;
+    padding: 5% 15%;
     vertical-align: middle;
 }
 
-#WordClock > *
+#WordClock > section
 {
     display:table-row;
 }
 
-#WordClock > * > *
+#WordClock > section > div
 {
     display: table-cell;
     font-size: 1.4rem;
     padding: 0.6rem;
     text-align: center;
-    width: 1.4rem;
+    /* width: 1.4rem; */
 }
 
-#WordClock > * > *.on
+#WordClock .on
 {
     color: #fff;
 /*    text-shadow: 0 0 0.8rem #666, 0 0 0.2rem #666, 0 0 0.2rem #999;*/ /* 6710886, 10066329: 0.4, 0.6 */
