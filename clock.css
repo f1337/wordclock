@@ -8,6 +8,11 @@ html
     font-size: 100%;
 }
 
+body
+{
+    background-color: #fff;
+}
+
 /*
 Styles for color selector
 */
