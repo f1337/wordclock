@@ -6,7 +6,7 @@ var onColor = '#fff';
 var runOnce = null;
 
 // http://xkcd.com/1123/
-function evenThymeIsJustHydrogenAndTime (activeNodes, indices)
+function evenThymeIsJustHydrogenAndTime (indices)
 {
     // console.log('indices', indices);
     var hourRow = indices[0];
@@ -72,7 +72,7 @@ function setCurrentTime ()
     }
 
     // highlight the hour
-    evenThymeIsJustHydrogenAndTime(activeNodes, hours[hour]);
+    evenThymeIsJustHydrogenAndTime(hours[hour]);
 
     // highlight the minute's ones
     var minTen = Math.floor(minute / 10);
@@ -91,14 +91,14 @@ function setCurrentTime ()
     // if an even multiple of 10 minutes, skip the "ones"
     if ( ! (minTen && minOne == 0) )
     {
-        evenThymeIsJustHydrogenAndTime(activeNodes, minOnes[minOne]);
+        evenThymeIsJustHydrogenAndTime(minOnes[minOne]);
     }
 
     // highlight the minute's "tens"
     // handle 10, 11, 12 in a special manner (see above)
     if ( minOne < 10 || minOne > 12 )
     {
-        evenThymeIsJustHydrogenAndTime(activeNodes, minTens[minTen]);
+        evenThymeIsJustHydrogenAndTime(minTens[minTen]);
     }
 
     // this method has been run once before
@@ -196,5 +196,19 @@ $(function ()
     setCurrentTime();
 
     // hijack click events
-    $('a').click(clickJackAllTheThings);
+    // jq.mobi
+    if ( window.jq )
+    {
+        $('a').bind('click', clickJackAllTheThings);
+    }
+    // jquery
+    else if ( window.jQuery )
+    {
+        $('a').click(clickJackAllTheThings);
+    }
+    // zepto
+    else if ( window.Zepto )
+    {
+        $('a').on('click', clickJackAllTheThings);
+    }
 });

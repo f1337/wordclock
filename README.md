@@ -2,7 +2,7 @@ wordclock
 =========
 
 A customizable word clock with to-the-minute granularity. Created using HTML, CSS and JavaScript.
-Inspired by [Biegert & Funk's QLOCKTWO](http://www.qlocktwo.com/info.php?lang=en). Powered by [jQuery](http://jquery.com).
+Inspired by [Biegert & Funk's QLOCKTWO](http://www.qlocktwo.com/info.php?lang=en). Powered by your choice of JavaScript selector library: [jQuery](http://jquery.com), [jqMobi](http://www.jqmobi.com), or [Zepto](http://zeptojs.com).
 
 Usage
 -----
