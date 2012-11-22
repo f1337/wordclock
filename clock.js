@@ -1,10 +1,36 @@
-function Klock ()
+function Klock (clockSelector, clickSelector)
 {
-    
+    this.activeNodes = [];
+    this.backgroundColor = '#000';
+    this.intervalToken = null;
+    this.offColor = '#333';
+    this.onColor = '#fff';
+
+    // find the clock on the page
+    this.clock = $(clockSelector);
+
+    // if clickSelector defined, setup the click hijack
+    if ( clickSelector )
+    {
+        this.clickJackAllTheThings(clickSelector);
+    }
+
+    // set the initial style
+    this.updateStyle();
+
+    // set the initial time
+    this.updateTime();
 }
 
+
+
+/****************************************************************************
+* Static Properties
+****************************************************************************/
 /*
-Link-lists below define grid positions for the various words on the clock
+Link-lists below define grid positions for the various words on the clock.
+The lists themselves are layout-specific: IOW, if new layouts are added,
+    new link lists will need to be created.
 */
 
 Klock.hours = [
@@ -62,16 +88,51 @@ Klock.minOnes = [
 
 
 
+/****************************************************************************
+* Instance Methods
+****************************************************************************/
 
-var activeNodes = [];
-var backgroundColor = '#000';
-var clock = null;
-var intervalToken = null;
-var offColor = '#333';
-var onColor = '#fff';
 
-// http://xkcd.com/1123/
-function evenThymeIsJustHydrogenAndTime (indices)
+
+// hijack click events for the given selector
+Klock.prototype.clickJackAllTheThings = function (selector)
+{
+    var self = this;
+    // the following syntax works for jqMobi, jQuery, and Zepto.
+    $(selector).on('click', function (e) { self.elementClicked(e); delete self; });
+}
+
+
+
+Klock.prototype.elementClicked = function (e)
+{
+    var link = $(e.currentTarget);
+
+    // get the new background color from the clicked element's style
+    var newBackgroundColor = link.css('background-color');
+    if ( newBackgroundColor ) this.backgroundColor = newBackgroundColor;
+
+    // get the new "off" color from the clicked element's data-off-color property
+    var newOffColor = link.data('off-color');
+    if ( newOffColor ) this.offColor = newOffColor;
+
+    // get the new "on" color from the clicked element's style
+    var newOnColor = link.css('color');
+    if ( newOnColor ) this.onColor = newOnColor;
+
+    // update the style settings
+    this.updateStyle();
+
+    // apply the new style to the highlighted nodes
+    for (var n = 0; n < this.activeNodes.length; n++)
+    {
+        this.activeNodes[n].css('color', this.onColor);
+    }
+}
+
+
+
+Klock.prototype.highlightElementsAtIndices = function (indices)
 {
     // console.log('indices', indices);
     var hourRow = indices[0];
@@ -81,66 +142,56 @@ function evenThymeIsJustHydrogenAndTime (indices)
     for (var i = hourLeft; i < hourRight; i++)
     {
         var child = row.children("*:nth-child(" + i + ")");
-        activeNodes.push(child);
-        child.css('color', onColor);
+        this.activeNodes.push(child);
+        child.css('color', this.onColor);
         child.addClass("on");
     }
 }
 
-function clickJackAllTheThings (e)
+
+
+Klock.prototype.updateStyle = function ()
 {
-    var link = $(e.currentTarget);
-
-    var newBackgroundColor = link.css('background-color');
-    if ( newBackgroundColor ) backgroundColor = newBackgroundColor;
-
-    var newOffColor = link.data('off-color');
-    if ( newOffColor ) offColor = newOffColor;
-
-    // var newOnColor = link.data('on-color');
-    var newOnColor = link.css('color');
-    if ( newOnColor ) onColor = newOnColor;
-
-    clock.css({
-       'background-color': backgroundColor,
-       'color': offColor
+    this.clock.css({
+       'background-color': this.backgroundColor,
+       'color': this.offColor
     });
-
-    // update the highlighted nodes
-    for (var n = 0; n < activeNodes.length; n++)
-    {
-        activeNodes[n].css('color', onColor);
-    }
 }
 
-function setCurrentTime ()
+
+
+Klock.prototype.updateTime = function ()
 {
     console.profile();
 
     //establish what the time is
     var currentTime = new Date();
     var hour = currentTime.getHours() - 1;
-    if(hour == -1){ hour = 11; }
+    if (hour == -1) { hour = 11; }
     var minute = currentTime.getMinutes();
     var ampm = "am";
-    if(hour > 11){
+    // hour > 11 => after noon
+    if (hour > 11)
+    {
         ampm = "pm";
-        hour = hour-12;
+        hour = hour - 12;
     }
-    if(hour == 11){
+    // 11 => noon => 12pm
+    if (hour == 11)
+    {
         ampm = "pm";
     }
 
     // un-highlight prior active nodes
-    while (activeNodes.length)
+    while (this.activeNodes.length)
     {
-        var node = activeNodes.shift();
-        node.css('color', offColor);
+        var node = this.activeNodes.shift();
+        node.css('color', '');
         node.removeClass("on");
     }
 
     // highlight the hour
-    evenThymeIsJustHydrogenAndTime(Klock.hours[hour]);
+    this.highlightElementsAtIndices(Klock.hours[hour]);
 
     // highlight the minute's ones
     var minTen = Math.floor(minute / 10);
@@ -159,70 +210,46 @@ function setCurrentTime ()
     // if an even multiple of 10 minutes, skip the "ones"
     if ( ! (minTen && minOne == 0) )
     {
-        evenThymeIsJustHydrogenAndTime(Klock.minOnes[minOne]);
+        this.highlightElementsAtIndices(Klock.minOnes[minOne]);
     }
 
     // highlight the minute's "tens"
     // handle 10, 11, 12 in a special manner (see above)
     if ( minOne < 10 || minOne > 12 )
     {
-        evenThymeIsJustHydrogenAndTime(Klock.minTens[minTen]);
+        this.highlightElementsAtIndices(Klock.minTens[minTen]);
     }
 
+    var self = this;
     // this method has been run once before
     // assume we're at the "top of the minute" now
     // clear the one-time interval and setup the per-minute interval
-    if ( intervalToken == -1 )
+    if ( this.intervalToken == -1 )
     {
         // set the interval to run every minute
-        intervalToken = setInterval(setCurrentTime, 60000);
-        console.log('set interval with token: ' + intervalToken);
+        this.intervalToken = setInterval(function () { self.updateTime(); delete self; }, 60000);
+        console.log('set interval with token: ' + this.intervalToken);
         
     }
     // run this function again at the top of the minute
     // but only do this ONCE!
-    else if ( intervalToken == null )
+    else if ( this.intervalToken == null )
     {
         var second = currentTime.getSeconds();
         var nextInterval = Math.max((60 - second), 1);
-        setTimeout(setCurrentTime, (nextInterval * 1000));
-        intervalToken = -1;
-        console.log('set timeout with token: ' + intervalToken);
+        setTimeout(function () { self.updateTime(); delete self; }, (nextInterval * 1000));
+        this.intervalToken = -1;
+        console.log('set timeout with token: ' + this.intervalToken);
     }
 
     console.profileEnd();
 }
 
 
+var myWordClock = null;
 
 $(function ()
 {
-    // find the clock on the page
-    clock = $('#WordClock');
-
-    // set the initial style
-    clock.css({
-       'background-color': backgroundColor,
-       'color': offColor
-    });
-
-    // set the initial time
-    setCurrentTime();
-
-    // hijack click events
-    // jq.mobi
-    if ( window.jq )
-    {
-        $('a').bind('click', clickJackAllTheThings);
-    }
-    // jquery
-    else if ( window.jQuery )
-    {
-        $('a').click(clickJackAllTheThings);
-    }
-    // zepto
-    else if ( window.Zepto )
-    {
-        $('a').on('click', clickJackAllTheThings);
-    }
+    myWordClock = new Klock('#WordClock');
+    myWordClock.clickJackAllTheThings('a');
 });
