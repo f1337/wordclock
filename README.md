@@ -48,9 +48,7 @@ TODO
 ----
 
 * Apply programmatic CSS text-shadows, based on current color scheme.
-* Show/hide the color picker (automatically? toggle on tap screen?).
 * Verify (and possibly fix) Internet Explorer support (IE9+).
-* DRY-up the JavaScript code (it isn't pretty at the moment).
 
 
 License
