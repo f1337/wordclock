@@ -10,14 +10,34 @@ html
 
 body
 {
+    margin: 1rem;
+    padding: 0;
     background-color: #fff;
 }
+
+a
+{
+    text-decoration: none;
+}
+
+header
+{
+    margin-right: 1rem;
+    position: absolute;
+    right: 0;
+}
+
 
 /*
 Styles for color selector
 */
 
-a
+nav
+{
+    position: absolute;
+}
+
+nav a
 {
     border-bottom: 1px solid #fff;
     border-right: 1px solid #fff;
@@ -26,14 +46,7 @@ a
     height: 4rem;
     overflow: hidden;
     padding: 0.4rem;
-    text-align: center;
-    text-decoration: none;
     width: 4rem;
-}
-
-nav
-{
-    position: absolute;
 }
 
 /*
