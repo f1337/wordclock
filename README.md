@@ -29,7 +29,7 @@ Customize the color scheme by editing the `<nav>` segment in index.html:
     <nav>
         <a href="#" style="background-color: #000; color: #fff" data-off-color="#333" title="Black &amp; White">Black &amp; White</a>
         <a href="#" style="background-color: #44301C; color: #9CCFDD" data-off-color="#5E5043" title="Earth &amp; Sky">Earth &amp; Sky</a>
-        <a href="#" style="background-color: #DF1A21; color: #FBE1A6" data-off-color="#FB6B58" title="Cherries &amp; Cream">Cherries &amp; Cream</a>
+        <a href="#" style="background-color: #DF1A21; color: #FBE1A6" data-off-color="#FB6B58" title="Cherry Cordial">Cherry Cordial</a>
         <a href="#" style="background-color: #063540; color: #E5D9CF" data-off-color="#176273" title="Blue Jeans">Blue Jeans</a>
         <a href="#" style="background-color: #730240; color: #F2BC79" data-off-color="#BF1B39" title="Raspberry Sorbet">Raspberry Sorbet</a>
         <a href="#" style="background-color: #3D4010; color: #CFD936" data-off-color="#575931" title="Olive Martini">Olive Martini</a>
