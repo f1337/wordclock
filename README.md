@@ -49,6 +49,7 @@ The latest CSS3 declarations used for the swatches cause the swatches to be un-c
 TODO
 ----
 
+* Hyperlink to a given style based on hash.
 * Verify (and possibly fix) Internet Explorer support (IE9+).
 
 
