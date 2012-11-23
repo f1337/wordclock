@@ -5,9 +5,10 @@ function Klock (clockSelector, clickSelector)
     this.intervalToken = null;
     this.offColor = '#333';
     this.onColor = '#fff';
+    this.textShadow = '';
 
     // find the clock on the page
-    this.clock = $(clockSelector);
+    this.clock = $('body');
 
     // if clickSelector defined, setup the click hijack
     if ( clickSelector )
@@ -128,7 +129,7 @@ Klock.prototype.elementClicked = function (e)
     {
         this.activeNodes[n].css('color', this.onColor);
     }
-}
+};
 
 
 
@@ -143,19 +144,24 @@ Klock.prototype.highlightElementsAtIndices = function (indices)
         var child = row.children("*:nth-child(" + i + ")");
         this.activeNodes.push(child);
         child.css('color', this.onColor);
+        // double text-shadow, using off & on colors:
+        child.css('text-shadow', this.textShadow);
         child.addClass("on");
     }
-}
+};
 
 
 
 Klock.prototype.updateStyle = function ()
 {
+    // double text-shadow, using off & on colors:
+    this.textShadow = '0 0 0.8rem ' + this.offColor + ', 0 0 0.8rem ' + this.onColor;
+    
     this.clock.css({
        'background-color': this.backgroundColor,
        'color': this.offColor
     });
-}
+};
 
 
 
@@ -186,6 +192,7 @@ Klock.prototype.updateTime = function ()
     {
         var node = this.activeNodes.shift();
         node.css('color', '');
+        node.css('text-shadow', '');
         node.removeClass("on");
     }
 
@@ -242,7 +249,7 @@ Klock.prototype.updateTime = function ()
     }
 
     // console.profileEnd();
-}
+};
 
 
 var myWordClock = null;
@@ -250,5 +257,5 @@ var myWordClock = null;
 $(function ()
 {
     myWordClock = new Klock('#WordClock');
-    myWordClock.clickJackAllTheThings('a');
+    myWordClock.clickJackAllTheThings('nav > a');
 });
