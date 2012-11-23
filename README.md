@@ -42,12 +42,13 @@ To add more color schemes, simply copy and paste one of the lines above, then cu
 Compatibility
 -------------
 
-wordclock *should* run in the latest CSS3/HTML5-friendly browsers, but has only been tested using Safari (6.0.2), Chrome (16.0.912.77, 23.0.1271.64), FireFox (9.0.1, 11.0, 17.0) and Opera (12.11) on on Mac OS X (10.8.2) and Mobile Safari on iOS 6.
+wordclock *should* run in the latest CSS3/HTML5-friendly browsers, but has only been tested using Safari (6.0.2), Chrome (16.0.912.77, 23.0.1271.64; see note below), FireFox (9.0.1, 11.0, 17.0) and Opera (12.11) on on Mac OS X (10.8.2) and Mobile Safari on iOS 6.
+
+The latest CSS3 declarations used for the swatches cause the swatches to be un-clickable in the latest versions of Chrome. This is a [known bug](http://code.google.com/p/chromium/issues/detail?id=92917), which the Chromium team has apparently chosen [not to fix](http://code.google.com/p/chromium/issues/detail?id=86730). We'll keep tinkering with the CSS, but have no intention of introducing markup hacks to make Chrome play nice.
 
 TODO
 ----
 
-* Apply programmatic CSS text-shadows, based on current color scheme.
 * Verify (and possibly fix) Internet Explorer support (IE9+).
 
 

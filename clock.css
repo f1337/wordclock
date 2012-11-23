@@ -13,13 +13,16 @@ html
 {
     font-family: Helvetica, Arial, _sans;
     font-size: 100%;
+	height: 100%;
 }
 
 body
 {
+    background-color: #000;
+    color: #ccc;
+	height: 100%;
     margin: 0;
     padding: 0;
-    background-color: #fff;
 }
 
 a
@@ -27,25 +30,29 @@ a
     text-decoration: none;
 }
 
+a:link, a:visited, a:hover, a:active
+{
+    color: inherit;
+}
+
 header
 {
-    margin-right: 1rem;
+    margin: 0;
+    padding: 0;
     position: absolute;
     right: 0;
-    top: .5em;
+    top: 0.3rem;
     text-align: center;
 }
 
-header a {
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    border-radius: 3px;
-    text-decoration: none;
-    padding: .1em .5em;
-    text-transform: uppercase;
-    letter-spacing: -1px;
-    font-weight: 400;
-    font-size: .8rem;
+header a
+{
+    background-color: rgba(255, 255, 255, 0.9);
+    font-size: .9rem;
+    font-weight: bold;
+    margin: 0;
+    padding: .4rem 0.8rem;
+    -webkit-box-shadow: 0 0 1rem 0.2rem rgba(255, 255, 255, 0.2);
 }
 
 
@@ -59,39 +66,24 @@ nav
     left: 0;
     height: 100%;
     display: table;
-    width: 1.25rem;
+    width: 6rem;
 }
 
-nav a
+nav > a
 {
-    border-right: 1px solid rgba(255,255,255,.5);
     display: table-row;
-    direction: ltr;
-    text-indent: -999em;
     overflow: hidden;
+    text-align: center;
     font-size: 0;
-    width: 10px;
-    position: relative;
+    height: 4rem;
 }
 
-nav a:after {
+nav > a:after
+{
     content: attr(title);
-    font-size: 10px;
-    color: white;
-    position: absolute;
-    width: 100px;
-    letter-spacing: -1px;
-    -moz-transform: rotate(-90deg);
-    -webkit-transform: rotate(-90deg);
-    -o-transform: rotate(-90deg);
-    -ms-transform: rotate(-90deg);
-    transform: rotate(-90deg);
-    /* filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3); */
-    width: 1rem;
-    left: 0;
-    text-align: center;
-    text-indent: -5rem;
-
+    font-size: 1rem;
+    display: table-cell;
+    vertical-align: middle;
 }
 
 /*
@@ -100,18 +92,17 @@ Styles for the clock itself
 
 #WordClock
 {
-    background-color: #000;
-    color: #ccc;
     display: table;
     margin: auto;
+    height: 100%;
     width: 100%;
-    padding: 5% 15%;
+    padding: 5% 1rem 5% 7rem;
     vertical-align: middle;
 }
 
 #WordClock > section
 {
-    display:table-row;
+    display: table-row;
 }
 
 #WordClock > section > div
@@ -120,11 +111,9 @@ Styles for the clock itself
     font-size: 1.4rem;
     padding: 0.6rem;
     text-align: center;
-    /* width: 1.4rem; */
 }
 
 #WordClock .on
 {
     color: #fff;
-/*    text-shadow: 0 0 0.8rem #666, 0 0 0.2rem #666, 0 0 0.2rem #999;*/ /* 6710886, 10066329: 0.4, 0.6 */
 }
