@@ -1,14 +1,14 @@
 function Klock (clockSelector, clickSelector)
 {
-    this.activeNodes = [];
-    this.backgroundColor = '#000';
-    this.intervalToken = null;
-    this.offColor = '#333';
-    this.onColor = '#fff';
-    this.textShadow = '';
-
     // find the clock on the page
     this.clock = $('body');
+
+    this.activeNodes = [];
+    this.backgroundColor = '#262626';
+    this.intervalToken = null;
+    this.offColor = '#595959';
+    this.onColor = '#f2f2f2';
+    this.textShadow = '';
 
     // if clickSelector defined, setup the click hijack
     if ( clickSelector )
@@ -146,7 +146,7 @@ Klock.prototype.highlightElementsAtIndices = function (indices)
         child.css('color', this.onColor);
         // double text-shadow, using off & on colors:
         child.css('text-shadow', this.textShadow);
-        child.addClass("on");
+        // child.addClass("on");
     }
 };
 
@@ -193,7 +193,7 @@ Klock.prototype.updateTime = function ()
         var node = this.activeNodes.shift();
         node.css('color', '');
         node.css('text-shadow', '');
-        node.removeClass("on");
+        // node.removeClass("on");
     }
 
     // highlight the hour

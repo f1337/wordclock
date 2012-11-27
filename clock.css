@@ -18,8 +18,8 @@ html
 
 body
 {
-    background-color: #000;
-    color: #ccc;
+    background-color: #262626;
+    color: #595959;
 	height: 100%;
     margin: 0;
     padding: 0;
@@ -115,5 +115,5 @@ Styles for the clock itself
 
 #WordClock .on
 {
-    color: #fff;
+    color: #f2f2f2;
 }
