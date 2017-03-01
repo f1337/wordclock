@@ -7,18 +7,18 @@ Inspired by [Biegert & Funk's QLOCKTWO](http://www.qlocktwo.com/info.php?lang=en
 Usage
 -----
 
-Usage is simple: Open index.html in your browser. Or [check out the live demo](http://heavyco.github.com/wordclock/).
+Usage is simple: Open index.html in your browser. Or [check out the live demo](https://f1337.github.io/wordclock/).
 
 Screenshots
 -----------
 
-[![Black](https://raw.github.com/f1337/wordclock/master/images/black.png)](http://f1337.github.com/wordclock/)
-[![Brown](https://raw.github.com/f1337/wordclock/master/images/brown.png)](http://f1337.github.com/wordclock/)
-[![Denim](https://raw.github.com/f1337/wordclock/master/images/denim.png)](http://f1337.github.com/wordclock/)
-[![Olive](https://raw.github.com/f1337/wordclock/master/images/olive.png)](http://f1337.github.com/wordclock/)
-[![Raspberry](https://raw.github.com/f1337/wordclock/master/images/raspberry.png)](http://f1337.github.com/wordclock/)
-[![Red](https://raw.github.com/f1337/wordclock/master/images/red.png)](http://f1337.github.com/wordclock/)
-[![Steel](https://raw.github.com/f1337/wordclock/master/images/steel.png)](http://f1337.github.com/wordclock/)
+[![Black](https://raw.github.com/f1337/wordclock/master/images/black.png)](https://f1337.github.com/wordclock/)
+[![Brown](https://raw.github.com/f1337/wordclock/master/images/brown.png)](https://f1337.github.com/wordclock/)
+[![Denim](https://raw.github.com/f1337/wordclock/master/images/denim.png)](https://f1337.github.com/wordclock/)
+[![Olive](https://raw.github.com/f1337/wordclock/master/images/olive.png)](https://f1337.github.com/wordclock/)
+[![Raspberry](https://raw.github.com/f1337/wordclock/master/images/raspberry.png)](https://f1337.github.com/wordclock/)
+[![Red](https://raw.github.com/f1337/wordclock/master/images/red.png)](https://f1337.github.com/wordclock/)
+[![Steel](https://raw.github.com/f1337/wordclock/master/images/steel.png)](https://f1337.github.com/wordclock/)
 
 
 Customization
